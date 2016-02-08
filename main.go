@@ -89,7 +89,7 @@ func main() {
 						}
 					}
 				}
-				if windowData.coloredN > squareSize*squareSize/2 {
+				if windowData.coloredN > squareSize*squareSize-squareSize {
 					windows[squareSize] = append(windows[squareSize], windowData)
 				}
 			}
