@@ -8,14 +8,6 @@ import (
 	"os"
 )
 
-// Downloads/hashcode/test_round
-
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
 func getLargestSideSize(s, rows, cols int) int {
 	c := 2 * (s - 1)
 	side, _ := math.Modf(math.Sqrt(float64(c)))
@@ -36,75 +28,72 @@ func generateMatrix(scanner *bufio.Scanner) (rows, cols, count int, dataArr [][]
 	var lineNum int
 	for scanner.Scan() {
 		if lineNum > 0 {
-			rows++
-		}
-		var lineSl []bool
-		for _, v := range scanner.Text() {
-			cols++
-			switch string(v) {
-			case ".":
-				lineSl = append(lineSl, false)
-			case "#":
-				count++
-				lineSl = append(lineSl, true)
+			var lineSl []bool
+			for _, v := range scanner.Text() {
+				cols++
+				switch string(v) {
+				case ".":
+					lineSl = append(lineSl, false)
+				case "#":
+					count++
+					lineSl = append(lineSl, true)
+				}
 			}
 			dataArr = append(dataArr, lineSl)
+			rows++
 		}
 		lineNum++
 	}
 	return
 }
 
-type coloredIndexes struct {
-	x       int
-	y       int
-	colored int
+type window struct {
+	x        int
+	y        int
+	coloredN int
 }
 
 func main() {
-	file, err := os.Open("/Users/sk/Downloads/hashcode/test_round/logo.in")
+	// Reading a file and generating the corresponding boolean matrix.
+	file, err := os.Open("input/logo.in")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-	// s, dataArr := generateMatrix(scanner)
-	rows, cols, s, dataArr := generateMatrix(scanner)
-
 	if scanner.Err() != nil {
 		log.Fatal(err)
 	}
 
+	rows, cols, s, dataArr := generateMatrix(scanner)
+
+	// Determining size of the largest square window.
 	ls := getLargestSideSize(s, rows, cols)
-	fmt.Println("===>>", ls)
 
-	maskMatrix := make([][]int, len(dataArr))
-	for i := 0; i < len(maskMatrix); i++ {
-		maskMatrix[i] = make([]int, len(dataArr[i]))
-	}
+	// Generating list of windows.
+	windows := make(map[int][]window)
 
-	windows := make(map[int]coloredIndexes)
-	currentSize := ls
-	var coloredCount, x, y int
-	for {
-		var colored int
-		for i := coloredCount; i < ls; i++ {
-			for j := coloredCount; j < ls; j++ {
-				if dataArr[i][j] {
-					colored++
+	for squareSize := ls; squareSize > 0; squareSize-- {
+		for x := 0; x <= len(dataArr[0])-squareSize; x++ {
+			for y := 0; y <= len(dataArr)-squareSize; y++ {
+				windowData := window{
+					x: x,
+					y: y,
 				}
+				for i := x; i < x+squareSize; i++ {
+					for j := y; j < y+squareSize; j++ {
+						if dataArr[j][i] {
+							windowData.coloredN++
+						}
+					}
+				}
+				windows[squareSize] = append(windows[squareSize], windowData)
 			}
 		}
-		windows[currentSize] = coloredIndexes{
-			x:       x,
-			y:       y,
-			colored: colored,
-		}
 	}
-git remote add origin git@github.com:skibish/round1.git
-	/*for _, v := range dataArr {
-		fmt.Println(v)
-	}*/
 
+	for windowSize, windowData := range windows {
+		fmt.Println(windowSize, windowData)
+	}
 }
