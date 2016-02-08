@@ -73,8 +73,9 @@ func main() {
 
 	// Generating list of windows.
 	windows := make(map[int][]window)
+	minSquareSize := 3
 
-	for squareSize := ls; squareSize > 0; squareSize-- {
+	for squareSize := ls; squareSize >= minSquareSize; squareSize-- {
 		for x := 0; x <= len(dataArr[0])-squareSize; x++ {
 			for y := 0; y <= len(dataArr)-squareSize; y++ {
 				windowData := window{
