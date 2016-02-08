@@ -6,6 +6,7 @@ import (
 	"log"
 	"math"
 	"os"
+	"sort"
 )
 
 func getLargestSideSize(s, rows, cols int) int {
@@ -53,6 +54,20 @@ type window struct {
 	coloredN int
 }
 
+type sortWindows []window
+
+func (s sortWindows) Less(i, j int) bool {
+	return s[i].coloredN < s[j].coloredN
+}
+
+func (s sortWindows) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+
+func (s sortWindows) Len() int {
+	return len(s)
+}
+
 func main() {
 	// Reading a file and generating the corresponding boolean matrix.
 	file, err := os.Open("input/logo.in")
@@ -96,7 +111,22 @@ func main() {
 		}
 	}
 
-	for windowSize, windowData := range windows {
-		fmt.Println(windowSize, windowData)
+	// Initializing mask matrix.
+	maskMatrix := make([][]bool, len(dataArr))
+	for i := range maskMatrix {
+		maskMatrix[i] = make([]bool, len(dataArr[i]))
+	}
+
+	// Sorting windows data.
+	var sortedKeys []int
+	for k := range windows {
+		sortedKeys = append(sortedKeys, k)
+		sort.Sort(sortWindows(windows[k]))
+	}
+
+	sort.Ints(sortedKeys)
+
+	for _, k := range sortedKeys {
+		fmt.Println(k, windows[k])
 	}
 }
