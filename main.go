@@ -91,21 +91,23 @@ func main() {
 	minSquareSize := 3
 
 	for squareSize := ls; squareSize >= minSquareSize; squareSize-- {
-		for x := 0; x <= len(dataArr[0])-squareSize; x++ {
-			for y := 0; y <= len(dataArr)-squareSize; y++ {
-				windowData := window{
-					x: x,
-					y: y,
-				}
-				for i := x; i < x+squareSize; i++ {
-					for j := y; j < y+squareSize; j++ {
-						if dataArr[j][i] {
-							windowData.coloredN++
+		if squareSize%2 != 0 { // iteraeting only on odds
+			for x := 0; x <= len(dataArr[0])-squareSize; x++ {
+				for y := 0; y <= len(dataArr)-squareSize; y++ {
+					windowData := window{
+						x: x,
+						y: y,
+					}
+					for i := x; i < x+squareSize; i++ {
+						for j := y; j < y+squareSize; j++ {
+							if dataArr[j][i] {
+								windowData.coloredN++
+							}
 						}
 					}
-				}
-				if windowData.coloredN >= squareSize*squareSize-squareSize {
-					windows[squareSize] = append(windows[squareSize], windowData)
+					if windowData.coloredN >= squareSize*squareSize-squareSize {
+						windows[squareSize] = append(windows[squareSize], windowData)
+					}
 				}
 			}
 		}
