@@ -129,16 +129,29 @@ func main() {
 	// sort in order max ~> min
 	sort.Sort(sort.Reverse(sort.IntSlice(sortedKeys)))
 
-	// initial draft for iterating windows
-	// for _, sqSize := range sortedKeys {
-	// 	for i := len(windows[sqSize]) - 1; i > 0; i-- {
-	// 		x := windows[sqSize][i].x
-	// 		y := windows[sqSize][i].y
-	//
-	// 	}
-	// }
+	commands := []string{}
+	cmdPaintSquare := `"PAINT_SQUARE %v %v %v"`
 
-	for _, k := range sortedKeys {
-		fmt.Println(k)
+	// iterating windows, from max ~> min
+	for _, sqSize := range sortedKeys {
+		// shift with help of which we will find center of square.
+		// S in PAINT_SQUARE command
+		shift, _ := math.Modf(float64(sqSize) / 2)
+
+		for i := len(windows[sqSize]) - 1; i > 0; i-- {
+			// find start coordinates to draw
+			centerX := windows[sqSize][i].x + int(shift)
+			centerY := windows[sqSize][i].y + int(shift)
+
+			// TODO: more steps here befor pushing to array
+
+			// pushing command to array
+			commands = append(commands, fmt.Sprintf(cmdPaintSquare, centerX, centerY, shift))
+
+		}
 	}
+
+	// for _, k := range commands {
+	// 	fmt.Println(k)
+	// }
 }
