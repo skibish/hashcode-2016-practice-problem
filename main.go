@@ -158,7 +158,7 @@ func main() {
 					// pushing square command to array
 					commands = append(commands, fmt.Sprintf(cmdPaintSquare, centerX, centerY, shift))
 
-					// TODO: paint next square ONLY if MORE THAN one row or collumn will be added
+					// TODO: paint next square if ONE or MORE THAN one row or collumn will be added
 					// TODO: sort commands, so ERASE will be last
 
 					maskMatrix[y][x] = true
