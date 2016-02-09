@@ -124,7 +124,8 @@ func main() {
 		sort.Sort(sortWindows(windows[k]))
 	}
 
-	sort.Ints(sortedKeys)
+	// sort in order max ~> min
+	sort.Sort(sort.Reverse(sort.IntSlice(sortedKeys)))
 
 	for _, k := range sortedKeys {
 		fmt.Println(k, windows[k])
