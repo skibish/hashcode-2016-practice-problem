@@ -146,7 +146,12 @@ func main() {
 			// Fill mask (area painted with squares)
 			for maskX := 0; maskX < sqSize; maskX++ {
 				for maskY := 0; maskY < sqSize; maskY++ {
-					maskMatrix[windows[sqSize][i].y+maskY][windows[sqSize][i].x+maskX] = true
+					y := windows[sqSize][i].y + maskY
+					x := windows[sqSize][i].x + maskX
+					// on mask we paint added squares
+					maskMatrix[y][x] = true
+					// on original we erase them
+					dataArr[y][x] = false
 				}
 			}
 
