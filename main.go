@@ -131,6 +131,7 @@ func main() {
 
 	commands := []string{}
 	cmdPaintSquare := `"PAINT_SQUARE %v %v %v"`
+	cmdEraseCell := `"ERASE_CELL %v %v"`
 
 	// iterating windows, from max ~> min
 	for _, sqSize := range sortedKeys {
@@ -149,19 +150,26 @@ func main() {
 					y := windows[sqSize][i].y + maskY
 					x := windows[sqSize][i].x + maskX
 					// on mask we paint added squares
+
+					// if cell is empty, we need to erase it (remember command)
+					if maskMatrix[y][x] == false {
+						commands = append(commands, fmt.Sprintf(cmdEraseCell, x, y))
+					}
+					// pushing square command to array
+					commands = append(commands, fmt.Sprintf(cmdPaintSquare, centerX, centerY, shift))
+
+					// TODO: paint next square ONLY if MORE THAN one row or collumn will be added
+					// TODO: sort commands, so ERASE will be last
+
 					maskMatrix[y][x] = true
 					// on original we erase them
 					dataArr[y][x] = false
 				}
 			}
-
-			// pushing command to array
-			commands = append(commands, fmt.Sprintf(cmdPaintSquare, centerX, centerY, shift))
-
 		}
 	}
 
-	// for _, k := range maskMatrix {
+	// for _, k := range commands {
 	// 	fmt.Println(k)
 	// }
 }
