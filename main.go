@@ -143,7 +143,12 @@ func main() {
 			centerX := windows[sqSize][i].x + int(shift)
 			centerY := windows[sqSize][i].y + int(shift)
 
-			// TODO: more steps here befor pushing to array
+			// Fill mask (area painted with squares)
+			for maskX := 0; maskX < sqSize; maskX++ {
+				for maskY := 0; maskY < sqSize; maskY++ {
+					maskMatrix[windows[sqSize][i].y+maskY][windows[sqSize][i].x+maskX] = true
+				}
+			}
 
 			// pushing command to array
 			commands = append(commands, fmt.Sprintf(cmdPaintSquare, centerX, centerY, shift))
@@ -151,7 +156,7 @@ func main() {
 		}
 	}
 
-	// for _, k := range commands {
+	// for _, k := range maskMatrix {
 	// 	fmt.Println(k)
 	// }
 }
