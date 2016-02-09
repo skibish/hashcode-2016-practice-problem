@@ -151,8 +151,8 @@ func main() {
 					x := windows[sqSize][i].x + maskX
 					// on mask we paint added squares
 
-					// if cell is empty, we need to erase it (remember command)
-					if maskMatrix[y][x] == false {
+					// if cell is empty in original, we need to erase it (remember command)
+					if dataArr[y][x] == false {
 						commands = append(commands, fmt.Sprintf(cmdEraseCell, x, y))
 					}
 					// pushing square command to array
