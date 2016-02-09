@@ -127,7 +127,16 @@ func main() {
 	// sort in order max ~> min
 	sort.Sort(sort.Reverse(sort.IntSlice(sortedKeys)))
 
+	// initial draft for iterating windows
+	// for _, sqSize := range sortedKeys {
+	// 	for i := len(windows[sqSize]) - 1; i > 0; i-- {
+	// 		x := windows[sqSize][i].x
+	// 		y := windows[sqSize][i].y
+	//
+	// 	}
+	// }
+
 	for _, k := range sortedKeys {
-		fmt.Println(k, windows[k])
+		fmt.Println(k)
 	}
 }
