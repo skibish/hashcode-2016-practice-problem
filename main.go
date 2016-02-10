@@ -265,12 +265,16 @@ func main() {
 			if sizeByX >= sizeByY {
 				commands["paint_line"] = append(commands["paint_line"], fmt.Sprintf(cmdPaintLine, startX, startY, endX, startY))
 
-				// TODO: erase
+				for xx := 0; xx < endX; xx++ {
+					dataArr[startY][xx] = false
+				}
 
 			} else {
 				commands["paint_line"] = append(commands["paint_line"], fmt.Sprintf(cmdPaintLine, startX, startY, startX, endY))
 
-				// TODO: erase
+				for yy := 0; yy < endY; yy++ {
+					dataArr[yy][yy] = false
+				}
 			}
 		}
 	}
