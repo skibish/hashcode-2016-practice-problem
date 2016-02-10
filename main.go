@@ -152,6 +152,7 @@ func main() {
 	commands := map[string][]string{}
 	cmdPaintSquare := `"PAINT_SQUARE %v %v %v"`
 	cmdEraseCell := `"ERASE_CELL %v %v"`
+	cmdPaintLine := `"PAINT_LINE %v %v %v %V"`
 
 	// iterating windows, from max ~> min
 	for _, sqSize := range sortedKeys {
@@ -218,8 +219,6 @@ func main() {
 						// pushing square command to array
 						commands["paint_square"] = append(commands["paint_square"], fmt.Sprintf(cmdPaintSquare, centerX, centerY, shift))
 
-						// TODO: sort commands, so ERASE will be last
-
 						maskMatrix[y][x] = true
 						// on original we erase them
 						dataArr[y][x] = false
@@ -228,6 +227,51 @@ func main() {
 
 			}
 
+		}
+	}
+
+	// find optimal lines TODO: not finished, need to loop to fill all lines
+	for x := 0; x < len(dataArr[0]); x++ {
+		var startX int
+		var startY int
+		var endX int
+		var endY int
+		for y := 0; y < len(dataArr); y++ {
+			if dataArr[y][x] == true {
+				startY = y
+				startX = x
+
+				for i := x; i < len(dataArr[0])-x; i++ {
+					if dataArr[y][i] == false {
+						break
+					}
+
+					endX = i
+				}
+
+				for j := y; j < len(dataArr)-y; j++ {
+					if dataArr[j][x] == false {
+						break
+					}
+
+					endY = j
+				}
+
+			}
+
+			sizeByX := endX - startX
+			sizeByY := endY - startY
+
+			if sizeByX >= sizeByY {
+				commands["paint_line"] = append(commands["paint_line"], fmt.Sprintf(cmdPaintLine, startX, startY, endX, startY))
+
+				// TODO: erase
+
+			} else {
+				commands["paint_line"] = append(commands["paint_line"], fmt.Sprintf(cmdPaintLine, startX, startY, startX, endY))
+
+				// TODO: erase
+			}
 		}
 	}
 
