@@ -219,20 +219,18 @@ func main() {
 						// on mask we paint added squares
 
 						// if cell is empty in original, we need to erase it (remember command)
-						if dataArr[y][x] == false {
+						if !dataArr[y][x] {
 							commands["erase_cell"] = append(commands["erase_cell"], fmt.Sprintf(cmdEraseCell, x, y))
 						}
-						// pushing square command to array
-						commands["paint_square"] = append(commands["paint_square"], fmt.Sprintf(cmdPaintSquare, centerX, centerY, shift))
 
 						maskMatrix[y][x] = true
 						// on original we erase them
 						dataArr[y][x] = false
 					}
 				}
-
+				// pushing square command to array
+				commands["paint_square"] = append(commands["paint_square"], fmt.Sprintf(cmdPaintSquare, centerX, centerY, shift))
 			}
-
 		}
 	}
 
