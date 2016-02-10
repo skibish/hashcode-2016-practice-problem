@@ -144,31 +144,74 @@ func main() {
 			centerX := windows[sqSize][i].x + int(shift)
 			centerY := windows[sqSize][i].y + int(shift)
 
-			// Fill mask (area painted with squares)
-			for maskX := 0; maskX < sqSize; maskX++ {
-				for maskY := 0; maskY < sqSize; maskY++ {
-					y := windows[sqSize][i].y + maskY
-					x := windows[sqSize][i].x + maskX
-					// on mask we paint added squares
-
-					// if cell is empty in original, we need to erase it (remember command)
-					if dataArr[y][x] == false {
-						commands = append(commands, fmt.Sprintf(cmdEraseCell, x, y))
+			// now we need to now if we need to paint
+			var toPaint bool
+			var sameSize int
+			// loop over Y axis and look if there is ONE empty column
+			for i := windows[sqSize][i].x; i < windows[sqSize][i].x+sqSize; i++ {
+				for j := windows[sqSize][i].y; j < windows[sqSize][i].y+sqSize; j++ {
+					if dataArr[j][i] == true {
+						sameSize++
 					}
-					// pushing square command to array
-					commands = append(commands, fmt.Sprintf(cmdPaintSquare, centerX, centerY, shift))
+				}
 
-					// TODO: paint next square if ONE or MORE THAN one row or collumn will be added
-					// TODO: sort commands, so ERASE will be last
+				if sameSize == sqSize {
+					toPaint = true
+					break
+				}
 
-					maskMatrix[y][x] = true
-					// on original we erase them
-					dataArr[y][x] = false
+				sameSize = 0
+			}
+
+			// if no column found, search for ROW
+			if !toPaint {
+				for i := windows[sqSize][i].y; i < windows[sqSize][i].y+sqSize; i++ {
+					for j := windows[sqSize][i].x; j < windows[sqSize][i].x+sqSize; j++ {
+						if dataArr[i][j] == true {
+							sameSize++
+						}
+					}
+
+					if sameSize == sqSize {
+						toPaint = true
+						break
+					}
+
+					sameSize = 0
 				}
 			}
+
+			// Only if ROW or COLUMN is found - paint
+
+			if toPaint {
+				// Fill mask (area painted with squares)
+				for maskX := 0; maskX < sqSize; maskX++ {
+					for maskY := 0; maskY < sqSize; maskY++ {
+						y := windows[sqSize][i].y + maskY
+						x := windows[sqSize][i].x + maskX
+						// on mask we paint added squares
+
+						// if cell is empty in original, we need to erase it (remember command)
+						if dataArr[y][x] == false {
+							commands = append(commands, fmt.Sprintf(cmdEraseCell, x, y))
+						}
+						// pushing square command to array
+						commands = append(commands, fmt.Sprintf(cmdPaintSquare, centerX, centerY, shift))
+
+						// TODO: sort commands, so ERASE will be last
+
+						maskMatrix[y][x] = true
+						// on original we erase them
+						dataArr[y][x] = false
+					}
+				}
+
+			}
+
 		}
 	}
 
+	fmt.Println(len(commands))
 	// for _, k := range commands {
 	// 	fmt.Println(k)
 	// }
