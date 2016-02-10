@@ -236,8 +236,7 @@ func main() {
 
 	// find optimal lines TODO: not finished, need to loop to fill all lines
 
-	var foundColored bool
-	foundColored = true
+	foundColored := true
 	for {
 		// if no colored found, we finished :)
 		if foundColored {
@@ -247,19 +246,16 @@ func main() {
 		}
 
 		for x := 0; x < len(dataArr[0]); x++ {
-			var startX int
-			var startY int
-			var endX int
-			var endY int
+			var startX, startY, endX, endY int
 			for y := 0; y < len(dataArr); y++ {
-				if dataArr[y][x] == true {
+				if dataArr[y][x] {
 					foundColored = true // mark, that we found colored
 
 					startY = y
 					startX = x
 
 					for i := x; i < len(dataArr[0]); i++ {
-						if dataArr[y][i] == false {
+						if !dataArr[y][i] {
 							break
 						}
 
@@ -267,7 +263,7 @@ func main() {
 					}
 
 					for j := y; j < len(dataArr); j++ {
-						if dataArr[j][x] == false {
+						if !dataArr[j][x] {
 							break
 						}
 
