@@ -169,8 +169,10 @@ func main() {
 			var toPaint bool
 			var sameSize int
 			// loop over Y axis and look if there is ONE empty column
-			for i := windows[sqSize][i].x; i < windows[sqSize][i].x+sqSize; i++ {
-				for j := windows[sqSize][i].y; j < windows[sqSize][i].y+sqSize; j++ {
+			el := windows[sqSize][i]
+
+			for i := el.x; i < el.x+sqSize; i++ {
+				for j := el.y; j < el.y+sqSize; j++ {
 					if dataArr[j][i] == true {
 						sameSize++
 					}
@@ -186,8 +188,8 @@ func main() {
 
 			// if no column found, search for ROW
 			if !toPaint {
-				for i := windows[sqSize][i].y; i < windows[sqSize][i].y+sqSize; i++ {
-					for j := windows[sqSize][i].x; j < windows[sqSize][i].x+sqSize; j++ {
+				for i := el.y; i < el.y+sqSize-1; i++ {
+					for j := el.x; j < el.x+sqSize-1; j++ {
 						if dataArr[i][j] == true {
 							sameSize++
 						}
@@ -208,8 +210,8 @@ func main() {
 				// Fill mask (area painted with squares)
 				for maskX := 0; maskX < sqSize; maskX++ {
 					for maskY := 0; maskY < sqSize; maskY++ {
-						y := windows[sqSize][i].y + maskY
-						x := windows[sqSize][i].x + maskX
+						y := el.y + maskY
+						x := el.x + maskX
 						// on mask we paint added squares
 
 						// if cell is empty in original, we need to erase it (remember command)
@@ -304,4 +306,5 @@ func main() {
 	// 	total = total + len(k)
 	// }
 	// fmt.Println(total)
+
 }
