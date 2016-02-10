@@ -231,52 +231,67 @@ func main() {
 	}
 
 	// find optimal lines TODO: not finished, need to loop to fill all lines
-	for x := 0; x < len(dataArr[0]); x++ {
-		var startX int
-		var startY int
-		var endX int
-		var endY int
-		for y := 0; y < len(dataArr); y++ {
-			if dataArr[y][x] == true {
-				startY = y
-				startX = x
 
-				for i := x; i < len(dataArr[0])-x; i++ {
-					if dataArr[y][i] == false {
-						break
+	var foundColored bool
+	foundColored = true
+	for {
+		// if no colored found, we finished :)
+		if foundColored {
+			foundColored = false
+		} else {
+			break
+		}
+
+		for x := 0; x < len(dataArr[0]); x++ {
+			var startX int
+			var startY int
+			var endX int
+			var endY int
+			for y := 0; y < len(dataArr); y++ {
+				if dataArr[y][x] == true {
+					foundColored = true // mark, that we found colored
+
+					startY = y
+					startX = x
+
+					for i := x; i < len(dataArr[0]); i++ {
+						if dataArr[y][i] == false {
+							break
+						}
+
+						endX = i
 					}
 
-					endX = i
-				}
+					for j := y; j < len(dataArr); j++ {
+						if dataArr[j][x] == false {
+							break
+						}
 
-				for j := y; j < len(dataArr)-y; j++ {
-					if dataArr[j][x] == false {
-						break
+						endY = j
 					}
 
-					endY = j
 				}
 
-			}
+				sizeByX := endX - startX
+				sizeByY := endY - startY
 
-			sizeByX := endX - startX
-			sizeByY := endY - startY
+				if sizeByX >= sizeByY {
+					commands["paint_line"] = append(commands["paint_line"], fmt.Sprintf(cmdPaintLine, startX, startY, endX, startY))
 
-			if sizeByX >= sizeByY {
-				commands["paint_line"] = append(commands["paint_line"], fmt.Sprintf(cmdPaintLine, startX, startY, endX, startY))
+					for xx := 0; xx < endX; xx++ {
+						dataArr[startY][xx] = false
+					}
 
-				for xx := 0; xx < endX; xx++ {
-					dataArr[startY][xx] = false
-				}
+				} else {
+					commands["paint_line"] = append(commands["paint_line"], fmt.Sprintf(cmdPaintLine, startX, startY, startX, endY))
 
-			} else {
-				commands["paint_line"] = append(commands["paint_line"], fmt.Sprintf(cmdPaintLine, startX, startY, startX, endY))
-
-				for yy := 0; yy < endY; yy++ {
-					dataArr[yy][startX] = false
+					for yy := 0; yy < endY; yy++ {
+						dataArr[yy][startX] = false
+					}
 				}
 			}
 		}
+
 	}
 
 	// clean duplicate commands
