@@ -220,7 +220,7 @@ func main() {
 
 						// if cell is empty in original, we need to erase it (remember command)
 						if !dataArr[y][x] {
-							commands["erase_cell"] = append(commands["erase_cell"], fmt.Sprintf(cmdEraseCell, x, y))
+							commands["erase_cell"] = append(commands["erase_cell"], fmt.Sprintf(cmdEraseCell, y, x))
 						}
 
 						maskMatrix[y][x] = true
@@ -229,7 +229,7 @@ func main() {
 					}
 				}
 				// pushing square command to array
-				commands["paint_square"] = append(commands["paint_square"], fmt.Sprintf(cmdPaintSquare, centerX, centerY, shift))
+				commands["paint_square"] = append(commands["paint_square"], fmt.Sprintf(cmdPaintSquare, centerY, centerX, shift))
 			}
 		}
 	}
@@ -276,14 +276,14 @@ func main() {
 				sizeByY := endY - startY
 
 				if sizeByX >= sizeByY {
-					commands["paint_line"] = append(commands["paint_line"], fmt.Sprintf(cmdPaintLine, startX, startY, endX, startY))
+					commands["paint_line"] = append(commands["paint_line"], fmt.Sprintf(cmdPaintLine, startY, startX, endY, startX))
 
 					for xx := startX; xx <= endX; xx++ {
 						dataArr[startY][xx] = false
 					}
 
 				} else {
-					commands["paint_line"] = append(commands["paint_line"], fmt.Sprintf(cmdPaintLine, startX, startY, startX, endY))
+					commands["paint_line"] = append(commands["paint_line"], fmt.Sprintf(cmdPaintLine, startY, startX, startY, endX))
 
 					for yy := startY; yy <= endY; yy++ {
 						dataArr[yy][startX] = false
