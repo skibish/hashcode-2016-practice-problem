@@ -150,9 +150,9 @@ func main() {
 	sort.Sort(sort.Reverse(sort.IntSlice(sortedKeys)))
 
 	commands := make(map[string][]string)
-	cmdPaintSquare := `"PAINT_SQUARE %v %v %v"`
-	cmdEraseCell := `"ERASE_CELL %v %v"`
-	cmdPaintLine := `"PAINT_LINE %v %v %v %V"`
+	cmdPaintSquare := `PAINT_SQUARE %v %v %v`
+	cmdEraseCell := `ERASE_CELL %v %v`
+	cmdPaintLine := `PAINT_LINE %v %v %v %v`
 
 	// iterating windows, from max ~> min
 	for _, sqSize := range sortedKeys {
@@ -303,10 +303,18 @@ func main() {
 		commands[k] = removeDuplicates(v)
 	}
 
-	// var total int
-	// for _, k := range commands {
-	// 	total = total + len(k)
-	// }
-	// fmt.Println(total)
+	// count total
+	var total int
+	for _, t := range commands {
+		total = total + len(t)
+	}
+	fmt.Println(total)
+
+	order := []string{"paint_square", "paint_line", "erase_cell"}
+	for k := 0; k < len(order); k++ {
+		for v := 0; v < len(commands[order[k]]); v++ {
+			fmt.Println(commands[order[k]][v])
+		}
+	}
 
 }
