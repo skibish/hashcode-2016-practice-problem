@@ -88,7 +88,7 @@ func main() {
 					matrix[j][inputX0] = "#"
 				}
 			} else if inputY0 == inputY1 {
-				for i := inputY0; i <= inputY1; i++ {
+				for i := inputX0; i <= inputX1; i++ {
 					matrix[inputY0][i] = "#"
 				}
 			} else {
