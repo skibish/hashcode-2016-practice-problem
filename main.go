@@ -273,7 +273,7 @@ func main() {
 				commands["paint_line"] = append(commands["paint_line"], fmt.Sprintf(cmdPaintLine, startX, startY, startX, endY))
 
 				for yy := 0; yy < endY; yy++ {
-					dataArr[yy][yy] = false
+					dataArr[yy][startX] = false
 				}
 			}
 		}
