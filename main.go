@@ -129,7 +129,7 @@ func main() {
 	// sort in order max ~> min
 	sort.Sort(sort.Reverse(sort.IntSlice(sortedKeys)))
 
-	commands := []string{}
+	commands := map[string][]string{}
 	cmdPaintSquare := `"PAINT_SQUARE %v %v %v"`
 	cmdEraseCell := `"ERASE_CELL %v %v"`
 
@@ -193,10 +193,10 @@ func main() {
 
 						// if cell is empty in original, we need to erase it (remember command)
 						if dataArr[y][x] == false {
-							commands = append(commands, fmt.Sprintf(cmdEraseCell, x, y))
+							commands["erase_cell"] = append(commands["erase_cell"], fmt.Sprintf(cmdEraseCell, x, y))
 						}
 						// pushing square command to array
-						commands = append(commands, fmt.Sprintf(cmdPaintSquare, centerX, centerY, shift))
+						commands["paint_square"] = append(commands["paint_square"], fmt.Sprintf(cmdPaintSquare, centerX, centerY, shift))
 
 						// TODO: sort commands, so ERASE will be last
 
@@ -211,8 +211,9 @@ func main() {
 		}
 	}
 
-	fmt.Println(len(commands))
+	// var total int
 	// for _, k := range commands {
-	// 	fmt.Println(k)
+	// 	total = total + len(k)
 	// }
+	// fmt.Println(total)
 }
