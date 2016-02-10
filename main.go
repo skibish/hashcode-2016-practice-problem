@@ -149,7 +149,7 @@ func main() {
 	// sort in order max ~> min
 	sort.Sort(sort.Reverse(sort.IntSlice(sortedKeys)))
 
-	commands := map[string][]string{}
+	commands := make(map[string][]string)
 	cmdPaintSquare := `"PAINT_SQUARE %v %v %v"`
 	cmdEraseCell := `"ERASE_CELL %v %v"`
 	cmdPaintLine := `"PAINT_LINE %v %v %v %V"`
