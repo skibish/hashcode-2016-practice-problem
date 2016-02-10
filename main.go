@@ -165,7 +165,7 @@ func main() {
 			centerX := windows[sqSize][i].x + int(shift)
 			centerY := windows[sqSize][i].y + int(shift)
 
-			// now we need to now if we need to paint
+			// now we need to know if we need to paint
 			var toPaint bool
 			var sameSize int
 			// loop over Y axis and look if there is ONE empty column
@@ -173,8 +173,10 @@ func main() {
 
 			for i := el.x; i < el.x+sqSize; i++ {
 				for j := el.y; j < el.y+sqSize; j++ {
-					if dataArr[j][i] == true {
+					if dataArr[j][i] {
 						sameSize++
+					} else {
+						break
 					}
 				}
 
@@ -188,10 +190,12 @@ func main() {
 
 			// if no column found, search for ROW
 			if !toPaint {
-				for i := el.y; i < el.y+sqSize-1; i++ {
-					for j := el.x; j < el.x+sqSize-1; j++ {
-						if dataArr[i][j] == true {
+				for i := el.y; i < el.y+sqSize; i++ {
+					for j := el.x; j < el.x+sqSize; j++ {
+						if dataArr[i][j] {
 							sameSize++
+						} else {
+							break
 						}
 					}
 
