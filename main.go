@@ -160,7 +160,7 @@ func main() {
 		// S in PAINT_SQUARE command
 		shift, _ := math.Modf(float64(sqSize) / 2)
 
-		for i := len(windows[sqSize]) - 1; i > 0; i-- {
+		for i := len(windows[sqSize]) - 1; i >= 0; i-- {
 			// find start coordinates to draw
 			centerX := windows[sqSize][i].x + int(shift)
 			centerY := windows[sqSize][i].y + int(shift)
