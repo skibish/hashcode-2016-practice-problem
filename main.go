@@ -270,23 +270,22 @@ func main() {
 						endY = j
 					}
 
-				}
+					sizeByX := endX - startX
+					sizeByY := endY - startY
 
-				sizeByX := endX - startX
-				sizeByY := endY - startY
+					if sizeByX >= sizeByY {
+						commands["paint_line"] = append(commands["paint_line"], fmt.Sprintf(cmdPaintLine, startY, startX, endY, startX))
 
-				if sizeByX >= sizeByY {
-					commands["paint_line"] = append(commands["paint_line"], fmt.Sprintf(cmdPaintLine, startY, startX, endY, startX))
+						for xx := startX; xx <= endX; xx++ {
+							dataArr[startY][xx] = false
+						}
 
-					for xx := startX; xx <= endX; xx++ {
-						dataArr[startY][xx] = false
-					}
+					} else {
+						commands["paint_line"] = append(commands["paint_line"], fmt.Sprintf(cmdPaintLine, startY, startX, startY, endX))
 
-				} else {
-					commands["paint_line"] = append(commands["paint_line"], fmt.Sprintf(cmdPaintLine, startY, startX, startY, endX))
-
-					for yy := startY; yy <= endY; yy++ {
-						dataArr[yy][startX] = false
+						for yy := startY; yy <= endY; yy++ {
+							dataArr[yy][startX] = false
+						}
 					}
 				}
 			}
