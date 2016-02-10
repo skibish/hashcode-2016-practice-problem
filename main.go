@@ -9,6 +9,26 @@ import (
 	"sort"
 )
 
+// inspired: http://www.dotnetperls.com/remove-duplicates-slice
+func removeDuplicates(elements []string) []string {
+	// Use map to record duplicates as we find them.
+	encountered := map[string]bool{}
+	result := []string{}
+
+	for v := range elements {
+		if encountered[elements[v]] == true {
+			// Do not add duplicate.
+		} else {
+			// Record this element as an encountered element.
+			encountered[elements[v]] = true
+			// Append to result slice.
+			result = append(result, elements[v])
+		}
+	}
+	// Return the new slice.
+	return result
+}
+
 func getLargestSideSize(s, rows, cols int) int {
 	c := 2 * (s - 1)
 	side, _ := math.Modf(math.Sqrt(float64(c)))
@@ -209,6 +229,11 @@ func main() {
 			}
 
 		}
+	}
+
+	// clean duplicate commands
+	for k, v := range commands {
+		commands[k] = removeDuplicates(v)
 	}
 
 	// var total int
