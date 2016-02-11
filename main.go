@@ -102,6 +102,7 @@ func main() {
 	}
 
 	rows, cols, s, dataArr := generateMatrix(scanner)
+	initdataArr := dataArr
 
 	// Determining size of the largest square window.
 	ls := getLargestSideSize(s, rows, cols)
@@ -219,7 +220,7 @@ func main() {
 						// on mask we paint added squares
 
 						// if cell is empty in original, we need to erase it (remember command)
-						if !dataArr[y][x] {
+						if !dataArr[y][x] && initdataArr[y][x] {
 							commands["erase_cell"] = append(commands["erase_cell"], fmt.Sprintf(cmdEraseCell, y, x))
 						}
 
