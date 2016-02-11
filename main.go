@@ -220,7 +220,7 @@ func main() {
 						// on mask we paint added squares
 
 						// if cell is empty in original, we need to erase it (remember command)
-						if !dataArr[y][x] && initdataArr[y][x] {
+						if !maskMatrix[y][x] && !dataArr[y][x] && !initdataArr[y][x] {
 							commands["erase_cell"] = append(commands["erase_cell"], fmt.Sprintf(cmdEraseCell, y, x))
 						}
 
@@ -245,16 +245,15 @@ func main() {
 		} else {
 			break
 		}
-
+		var startX, startY, endX, endY int
 		for x := 0; x < len(dataArr[0]); x++ {
-			var startX, startY, endX, endY int
 			for y := 0; y < len(dataArr); y++ {
 				if dataArr[y][x] {
 					foundColored = true // mark, that we found colored
 
 					startY = y
 					startX = x
-
+					endX = 0
 					for i := x; i < len(dataArr[0]); i++ {
 						if !dataArr[y][i] {
 							break
@@ -263,6 +262,7 @@ func main() {
 						endX = i
 					}
 
+					endY = 0
 					for j := y; j < len(dataArr); j++ {
 						if !dataArr[j][x] {
 							break
@@ -271,18 +271,18 @@ func main() {
 						endY = j
 					}
 
-					sizeByX := endX - startX
-					sizeByY := endY - startY
+					sizeByX := endX - startX + 1
+					sizeByY := endY - startY + 1
 
 					if sizeByX >= sizeByY {
-						commands["paint_line"] = append(commands["paint_line"], fmt.Sprintf(cmdPaintLine, startY, startX, endY, startX))
+						commands["paint_line"] = append(commands["paint_line"], fmt.Sprintf(cmdPaintLine, startY, startX, startY, endX))
 
 						for xx := startX; xx <= endX; xx++ {
 							dataArr[startY][xx] = false
 						}
 
 					} else {
-						commands["paint_line"] = append(commands["paint_line"], fmt.Sprintf(cmdPaintLine, startY, startX, startY, endX))
+						commands["paint_line"] = append(commands["paint_line"], fmt.Sprintf(cmdPaintLine, startY, startX, endY, startX))
 
 						for yy := startY; yy <= endY; yy++ {
 							dataArr[yy][startX] = false
